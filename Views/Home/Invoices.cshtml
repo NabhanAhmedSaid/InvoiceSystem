@@ -1,0 +1,29 @@
+@model IEnumerable<invoices.Models.Invoice>
+
+<h2>جهات الاتصال</h2>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Invoicenumber</th>
+        <th>Company</th>
+        <th>InvoiceDate</th>
+        <th>Notes</th>
+        <th>Phone</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var i in Model)
+    {
+        <tr>
+            <td>@i.Invoicenumber</td>
+            <td>@i.Company</td>
+            <td>@i.InvoiceDate</td>
+            <td>@i.Notes</td>
+            <td>@i.Phone</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a asp-action="CreateInvoice" class="btn btn-success">Add Invoice</a>

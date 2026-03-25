@@ -189,3 +189,4 @@
 /home/alan/Desktop/invoicesApp/invoices/bin/Debug/net10.0/AngleSharp.dll
 /home/alan/Desktop/invoicesApp/invoices/bin/Debug/net10.0/AngleSharp.Css.dll
 /home/alan/Desktop/invoicesApp/invoices/bin/Debug/net10.0/HtmlSanitizer.dll
+/home/alan/Desktop/invoicesApp/invoices/obj/Debug/net10.0/invoices.sourcelink.json

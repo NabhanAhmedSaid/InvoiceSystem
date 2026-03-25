@@ -56,6 +56,11 @@ public class HomeController : Controller
         var contacts = _context.Contacts.ToList();
         return View(contacts);
     }
+    public IActionResult Invoices()
+    {
+        var contacts = _context.Invoices.ToList();
+        return View(contacts);
+    }
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult CreateContacts(ContactViewModel contactVM)
