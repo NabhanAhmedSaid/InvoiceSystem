@@ -1,0 +1,27 @@
+@model IEnumerable<invoices.Models.Contact>
+
+<h2>جهات الاتصال</h2>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>الاسم</th>
+        <th>الهاتف</th>
+        <th>المدينة</th>
+        <th>المحافظة</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var contact in Model)
+    {
+        <tr>
+            <td>@contact.Name</td>
+            <td>@contact.Phone</td>
+            <td>@contact.City</td>
+            <td>@contact.Governorate</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a asp-action="AddContact" class="btn btn-success">إضافة جهة اتصال جديدة</a>

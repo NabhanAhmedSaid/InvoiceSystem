@@ -1,0 +1,41 @@
+
+@model invoices.Models.Invoice
+
+
+
+<form asp-action="CreateInvoice">
+    
+    <div class="form-group">
+        <label>Phone Number</label>
+        <select asp-for="Phone" asp-items="ViewBag.Contacts" class="form-control">
+            <option value="">Choose Phone Number</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Invoice Number</label>
+        <input asp-for="Invoicenumber" class="form-control" />
+    </div>
+    
+    <div class="form-group">
+        <label>Invoice Date</label>
+      
+        <input asp-for="InvoiceDate" type="date" class="form-control" />
+    </div>
+    
+    <div class="form-group">
+        <label>Amount</label>
+        <input asp-for="Amount" class="form-control" />
+    </div> 
+    <div class="form-group">
+        <label>Company</label>
+        <input asp-for="Company" class="form-control" />
+    </div>
+    
+    <div class="form-group">
+        <label>Notes</label>
+        <input asp-for="Notes" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
