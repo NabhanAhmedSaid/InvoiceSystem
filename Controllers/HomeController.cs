@@ -51,6 +51,11 @@ public class HomeController : Controller
         ViewBag.Products = new SelectList(_context.Contacts, "Id", "Name", invoiceVM.Phone);
         return View("Index");
     }
+    public IActionResult Contact(int id)
+    {
+        var contact = _context.Contacts.FirstOrDefault(c => c.Id == id);
+        return View(contact);
+    }
     public IActionResult Contacts()
     {
         var contacts = _context.Contacts.ToList();
