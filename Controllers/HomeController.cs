@@ -2,18 +2,20 @@ using System.Diagnostics;
 using Ganss.Xss;
 using Microsoft.AspNetCore.Mvc;
 using invoices.Models;
+using invoices.Repositories;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace invoices.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ContactsDbContext _context;
+    private readonly IInvoicesRepository _repo;
 
-    public HomeController(ContactsDbContext context)
+    public HomeController(IInvoicesRepository repo)
     {
-        _context = context;
+        _repo = repo;
     }
+    
 
     public IActionResult AddContact()
     {
@@ -22,7 +24,8 @@ public class HomeController : Controller
 
     public IActionResult CreateInvoice()
     {
-        ViewBag.Contacts = new SelectList(_context.Contacts, "Phone", "Phone");
+        var contacts = _repo.Contacts();
+        ViewBag.Contacts = new SelectList(contacts, "Phone", "Phone");
         return View();
     }
     
@@ -41,67 +44,68 @@ public class HomeController : Controller
                 InvoiceDate =  invoiceVM.InvoiceDate,
                 Invoicenumber =  invoiceVM.Invoicenumber,
               
-
+    
             };
-            _context.Add(invoice);
-            await _context.SaveChangesAsync();
+            await _repo.AddAsyncInvoices(invoice);
+            await _repo.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
-
-        ViewBag.Products = new SelectList(_context.Contacts, "Id", "Name", invoiceVM.Phone);
+        var contacts = _repo.Contacts();
+    
+        ViewBag.Products = new SelectList(contacts, "Id", "Name", invoiceVM.Phone);
         return View("Index");
     }
     public IActionResult Contact(int id)
     {
-        var contact = _context.Contacts.FirstOrDefault(c => c.Id == id);
+        var contact = _repo.Contact(id);
         return View(contact);
     }
     public IActionResult Contacts()
     {
-        var contacts = _context.Contacts.ToList();
+        var contacts = _repo.Contacts();
         return View(contacts);
     }
     public IActionResult Invoices()
     {
-        var contacts = _context.Invoices.ToList();
+        var contacts = _repo.Invoices();
         return View(contacts);
     }
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult CreateContacts(ContactViewModel contactVM)
-    {
-        var sanitizer = new HtmlSanitizer();
-        
-        if (ModelState.IsValid)
-        {
-            var contact = new Contact()
-            {
-                Name =sanitizer.Sanitize( contactVM.Name),
-                Phone = contactVM.Phone,
-                City = contactVM.City,
-                Governorate = contactVM.Governorate,
-
-            };
-            try
-            {
-                _context.Contacts.Add(contact);
-                _context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                // Log without exposing sensitive data
-                //_logger.LogError(ex, "Error creating contact");
-
-                ModelState.AddModelError("", "حدث خطأ أثناء الحفظ");
-                return RedirectToAction("Index");
-            }
-          
-          
-        }
-        return RedirectToAction("Index");
-    }
-
-    
+    // [HttpPost]
+    // [ValidateAntiForgeryToken]
+    // public IActionResult CreateContacts(ContactViewModel contactVM)
+    // {
+    //     var sanitizer = new HtmlSanitizer();
+    //     
+    //     if (ModelState.IsValid)
+    //     {
+    //         var contact = new Contact()
+    //         {
+    //             Name =sanitizer.Sanitize( contactVM.Name),
+    //             Phone = contactVM.Phone,
+    //             City = contactVM.City,
+    //             Governorate = contactVM.Governorate,
+    //
+    //         };
+    //         try
+    //         {
+    //             _context.Contacts.Add(contact);
+    //             _context.SaveChanges();
+    //         }
+    //         catch (Exception ex)
+    //         {
+    //             // Log without exposing sensitive data
+    //             //_logger.LogError(ex, "Error creating contact");
+    //
+    //             ModelState.AddModelError("", "حدث خطأ أثناء الحفظ");
+    //             return RedirectToAction("Index");
+    //         }
+    //       
+    //       
+    //     }
+    //     return RedirectToAction("Index");
+    // }
+    //
+    //
     public IActionResult Index()
     {
         return View();

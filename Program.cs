@@ -1,11 +1,12 @@
 using invoices.Models;
+using invoices.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddScoped<IInvoicesRepository, InvoicesRepository>();
 builder.Services.AddDbContext<ContactsDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
