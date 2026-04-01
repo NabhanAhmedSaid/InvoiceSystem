@@ -43,7 +43,7 @@ public class HomeController : Controller
                 Notes =  invoiceVM.Notes,
                 InvoiceDate =  invoiceVM.InvoiceDate,
                 Invoicenumber =  invoiceVM.Invoicenumber,
-              
+               
     
             };
             await _repo.AddAsyncInvoices(invoice);
