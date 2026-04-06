@@ -6,8 +6,10 @@ public interface IInvoicesRepository
 {
    Contact Contact(int id);
    List<Contact> Contacts();
-   List<Invoice> Invoices();
+   List<Contact> Invoices();
    
    Task AddAsyncInvoices(Invoice invoice);
    Task SaveAsync();
+   void Add(Contact contact);
+   void Save();
 }

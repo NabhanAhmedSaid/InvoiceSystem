@@ -1,4 +1,5 @@
 using invoices.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace invoices.Repositories;
 
@@ -20,9 +21,9 @@ public class InvoicesRepository: IInvoicesRepository
        return _context.Contacts.ToList();
     }
 
-    public List<Invoice> Invoices()
+    public List<Contact> Invoices()
     {
-      return  _context.Invoices.ToList();
+      return  _context.Contacts.Include(c=>c.Invoices).ToList();
     }
 
    
@@ -34,5 +35,15 @@ public class InvoicesRepository: IInvoicesRepository
     public async Task SaveAsync()
     {
         await _context.SaveChangesAsync();
+    }
+
+    public void Add(Contact contact)
+    {
+        _context.Contacts.Add(contact);
+    }
+
+    public void Save()
+    {
+        _context.SaveChanges();
     }
 }

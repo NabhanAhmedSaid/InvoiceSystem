@@ -24,7 +24,7 @@ public class HomeController : Controller
 
     public IActionResult CreateInvoice()
     {
-        var contacts = _repo.Contacts();
+        var contacts = _repo.Contacts().OrderBy(c=>c.Phone).ToList();
         ViewBag.Contacts = new SelectList(contacts, "Phone", "Phone");
         return View();
     }
@@ -70,42 +70,42 @@ public class HomeController : Controller
         var contacts = _repo.Invoices();
         return View(contacts);
     }
-    // [HttpPost]
-    // [ValidateAntiForgeryToken]
-    // public IActionResult CreateContacts(ContactViewModel contactVM)
-    // {
-    //     var sanitizer = new HtmlSanitizer();
-    //     
-    //     if (ModelState.IsValid)
-    //     {
-    //         var contact = new Contact()
-    //         {
-    //             Name =sanitizer.Sanitize( contactVM.Name),
-    //             Phone = contactVM.Phone,
-    //             City = contactVM.City,
-    //             Governorate = contactVM.Governorate,
-    //
-    //         };
-    //         try
-    //         {
-    //             _context.Contacts.Add(contact);
-    //             _context.SaveChanges();
-    //         }
-    //         catch (Exception ex)
-    //         {
-    //             // Log without exposing sensitive data
-    //             //_logger.LogError(ex, "Error creating contact");
-    //
-    //             ModelState.AddModelError("", "حدث خطأ أثناء الحفظ");
-    //             return RedirectToAction("Index");
-    //         }
-    //       
-    //       
-    //     }
-    //     return RedirectToAction("Index");
-    // }
-    //
-    //
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult CreateContacts(ContactViewModel contactVM)
+    {
+        var sanitizer = new HtmlSanitizer();
+        
+        if (ModelState.IsValid)
+        {
+            var contact = new Contact()
+            {
+                Name =sanitizer.Sanitize( contactVM.Name),
+                Phone = contactVM.Phone,
+                City = contactVM.City,
+                Governorate = contactVM.Governorate,
+    
+            };
+            try
+            {
+                _repo.Add(contact);
+                _repo.Save();
+            }
+            catch (Exception ex)
+            {
+                // Log without exposing sensitive data
+                //_logger.LogError(ex, "Error creating contact");
+    
+                ModelState.AddModelError("", "حدث خطأ أثناء الحفظ");
+                return RedirectToAction("Index");
+            }
+          
+          
+        }
+        return RedirectToAction("Index");
+    }
+    
+    
     public IActionResult Index()
     {
         return View();
