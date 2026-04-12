@@ -3,16 +3,19 @@ using Ganss.Xss;
 using Microsoft.AspNetCore.Mvc;
 using invoices.Models;
 using invoices.Repositories;
+using invoices.Service;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace invoices.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly IInvoiceService _service;
     private readonly IInvoicesRepository _repo;
 
-    public HomeController(IInvoicesRepository repo)
+    public HomeController(IInvoicesRepository repo, IInvoiceService service)
     {
+        _service = service;
         _repo = repo;
     }
     
@@ -57,17 +60,17 @@ public class HomeController : Controller
     }
     public IActionResult Contact(int id)
     {
-        var contact = _repo.Contact(id);
+        var contact = _service.Contact(id);
         return View(contact);
     }
     public IActionResult Contacts()
     {
-        var contacts = _repo.Contacts();
+        var contacts = _service.Contacts();
         return View(contacts);
     }
     public IActionResult Invoices()
     {
-        var contacts = _repo.Invoices();
+        var contacts = _service.Invoices();
         return View(contacts);
     }
     [HttpPost]

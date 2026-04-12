@@ -12,6 +12,7 @@
         <th>InvoiceDate</th>
         <th>Notes</th>
         <th>Phone</th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
@@ -23,11 +24,14 @@
             <td>@i.Phone</td>
             <td>@i.City</td>
             
+            <th> <a href="@Url.Action("Contact", "Home", new { id = i.Id })">View</a></th>
+            
             @{
                 numberP++;
             }
 
         </tr>
+        
         
         @foreach (var c in i.Invoices)
         {
