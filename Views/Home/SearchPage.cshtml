@@ -1,0 +1,41 @@
+@model  IEnumerable<invoices.Models.Contact>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+<div>
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>الاسم</th>
+                <th>الهاتف</th>
+                <th>المدينة</th>
+                <th>المحافظة</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var contact in Model)
+            {
+                <tr>
+                    <td>@contact.Name</td>
+                    <td>@contact.Phone</td>
+                    <td>@contact.City</td>
+                    <td>@contact.Governorate</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>
+</body>
+</html>

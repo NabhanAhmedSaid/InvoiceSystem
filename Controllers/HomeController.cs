@@ -38,20 +38,7 @@ public class HomeController : Controller
     {
         if (ModelState.IsValid)
         {
-            var invoice = new Invoice()
-            {
-                Phone = invoiceVM.Phone,
-                Amount =  invoiceVM.Amount,
-                Company =  invoiceVM.Company,
-                Notes =  invoiceVM.Notes,
-                InvoiceDate =  invoiceVM.InvoiceDate,
-                Invoicenumber =  invoiceVM.Invoicenumber,
-               
-    
-            };
-            await _repo.AddAsyncInvoices(invoice);
-            await _repo.SaveAsync();
-            return RedirectToAction(nameof(Index));
+            _service.CreateInvoice(invoiceVM);
         }
         var contacts = _repo.Contacts();
     
@@ -81,18 +68,11 @@ public class HomeController : Controller
         
         if (ModelState.IsValid)
         {
-            var contact = new Contact()
-            {
-                Name =sanitizer.Sanitize( contactVM.Name),
-                Phone = contactVM.Phone,
-                City = contactVM.City,
-                Governorate = contactVM.Governorate,
-    
-            };
+           
             try
             {
-                _repo.Add(contact);
-                _repo.Save();
+                _service.CreateContacts(contactVM);
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
@@ -123,5 +103,10 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+    public IActionResult SearchPage(string query)
+    {
+        var result = _service.SearchContact(query);
+        return View(result);
     }
 }

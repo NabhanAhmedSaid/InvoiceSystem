@@ -46,4 +46,11 @@ public class InvoicesRepository: IInvoicesRepository
     {
         _context.SaveChanges();
     }
+
+    public List<Contact> Search(string query)
+    {
+        return _context.Contacts
+            .Where(p => p.Name.Contains(query))
+            .ToList();
+    }
 }

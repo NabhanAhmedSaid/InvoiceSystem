@@ -12,4 +12,5 @@ public interface IInvoicesRepository
    Task SaveAsync();
    void Add(Contact contact);
    void Save();
+   List<Contact> Search(string query);
 }
